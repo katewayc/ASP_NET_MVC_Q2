@@ -13,6 +13,6 @@ namespace ASP_NET_MVC_Q2.ViewModels
 
     public class ProductViewModel: Product
     {
-       
+        public string PriceLocal { get; set; }
     }
 }
