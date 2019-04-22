@@ -1,0 +1,60 @@
+﻿@model ASP_NET_MVC_Q2.ViewModels.ProductListViewModel
+
+@{
+    ViewBag.Title = "Product List";
+}
+
+@using X.PagedList.Mvc;
+
+
+
+<h2>List of Products</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-bordered table-striped">
+
+    @{var dummy = Model.ProductList.FirstOrDefault(); }
+    <tr>
+        <th>@Html.DisplayNameFor(model => dummy.Id)</th>
+        <th>@Html.DisplayNameFor(model => dummy.Product_Name)</th>
+        <th>@Html.DisplayNameFor(model => dummy.Locale)</th>
+        <th>@Html.DisplayNameFor(model => dummy.Create_Date)</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.ProductList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(m => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Product_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Locale)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Create_Date)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.PagedListPager((X.PagedList.IPagedList)Model.ProductList,
+    page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions
+    {
+        ContainerDivClasses = new[] { "" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        MaximumPageNumbersToDisplay = 5
+    })
