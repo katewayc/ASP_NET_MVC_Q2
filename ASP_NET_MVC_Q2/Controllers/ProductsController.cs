@@ -39,6 +39,11 @@ namespace ASP_NET_MVC_Q2.Controllers
 
             products.PriceLocal =Convert.ToString(string.Format(new CultureInfo(GetCurrencyByLocale(products.Locale)), "{0:c}", products.Price));
 
+            decimal result;
+            if (decimal.TryParse(products.Promote_Price, out result))
+            { products.Promote_Price = Convert.ToString(string.Format(new CultureInfo(GetCurrencyByLocale(products.Locale)), "{0:c}", result)); }
+            else
+            { products.Promote_Price = "-"; }
 
             return View(products);
         }
