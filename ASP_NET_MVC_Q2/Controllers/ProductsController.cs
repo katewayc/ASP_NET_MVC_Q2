@@ -27,7 +27,7 @@ namespace ASP_NET_MVC_Q2.Controllers
             return View(productListViewModel);
         }
 
-        public ActionResult Detail(int id =1)
+        public ActionResult Detail(int id = 1)
         {
             ProductListViewModel productListViewModel = new ProductListViewModel();
             List<ProductViewModel> _products = GetProductsFromJsonFile();
@@ -37,7 +37,7 @@ namespace ASP_NET_MVC_Q2.Controllers
                 .Where(m => m.Id == id)
                 .FirstOrDefault();
 
-            products.PriceLocal =Convert.ToString(string.Format(new CultureInfo(GetCurrencyByLocale(products.Locale)), "{0:c}", products.Price));
+            products.PriceLocal = products.Price.ToString();
 
             decimal result;
             if (decimal.TryParse(products.Promote_Price, out result))
