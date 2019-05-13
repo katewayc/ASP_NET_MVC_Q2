@@ -14,36 +14,30 @@ namespace ASP_NET_MVC_Q2.Controllers
     public class ProductsController : Controller
     {
         private int pageSize = 5;
-        // GET: Products
         public ActionResult Index(int? page)
         {
-            ProductListViewModel productListViewModel = new ProductListViewModel();
+            ProductListViewModel model = new ProductListViewModel();
             List<ProductViewModel> products = GetProductsFromJsonFile();
-            productListViewModel.ProductList = products;
+            model.ProductList = products;
 
             var pageNumber = page ?? 1;
-            productListViewModel.ProductList = productListViewModel.ProductList.ToPagedList(pageNumber, pageSize);
+            model.ProductList = model.ProductList.ToPagedList(pageNumber, pageSize);
 
-            return View(productListViewModel);
+            return View(model);
         }
 
         public ActionResult Detail(int id = 1)
         {
-            ProductListViewModel productListViewModel = new ProductListViewModel();
-            List<ProductViewModel> _products = GetProductsFromJsonFile();
-            productListViewModel.ProductList = _products;
+            ProductListViewModel model = new ProductListViewModel();
+            List<ProductViewModel> productList = GetProductsFromJsonFile();
+            model.ProductList = productList;
 
-            var products = productListViewModel.ProductList
+            var products = model.ProductList
                 .Where(m => m.Id == id)
                 .FirstOrDefault();
 
             products.PriceLocal = products.Price.ToString();
 
-            decimal result;
-            if (decimal.TryParse(products.Promote_Price, out result))
-            { products.Promote_Price = Convert.ToString(string.Format(new CultureInfo(GetCurrencyByLocale(products.Locale)), "{0:c}", result)); }
-            else
-            { products.Promote_Price = "-"; }
 
             return View(products);
         }
@@ -64,34 +58,5 @@ namespace ASP_NET_MVC_Q2.Controllers
             return productListViewModels;
         }
 
-        private string GetCurrencyByLocale(string locale)
-        {
-            string _currency = "";
-            switch (locale)
-            {
-                case "US":
-                    _currency = "en-US";
-                    break;
-                case "DE":
-                    _currency = "de-DE";
-                    break;
-                case "CA":
-                    _currency = "en-CA";
-                    break;
-                case "ES":
-                    _currency = "es-ES";
-                    break;
-                case "FR":
-                    _currency = "fr-FR";
-                    break;
-                case "JP":
-                    _currency = "ja-JP";
-                    break;
-                default:
-                    _currency = "en-US";
-                    break;
-            }
-            return _currency;
-        }
     }
 }

@@ -1,12 +1,9 @@
-﻿@model ASP_NET_MVC_Q2.ViewModels.ProductListViewModel
+﻿@using X.PagedList.Mvc;
+@model ASP_NET_MVC_Q2.ViewModels.ProductListViewModel
 
 @{
     ViewBag.Title = "Product List";
 }
-
-@using X.PagedList.Mvc;
-
-
 
 <h2>List of Products</h2>
 
@@ -38,7 +35,7 @@
                 @Html.DisplayFor(m => item.Create_Date)
             </td>
             <td>
-                @Html.ActionLink("Details", "Detail", new {  id=item.Id }) 
+                @Html.ActionLink("Details", "Detail", new { id = item.Id })
             </td>
         </tr>
     }

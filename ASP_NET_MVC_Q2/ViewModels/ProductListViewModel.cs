@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -12,20 +13,61 @@ namespace ASP_NET_MVC_Q2.ViewModels
         public IEnumerable<ProductViewModel> ProductList { get; set; }
     }
 
-    public class ProductViewModel : Product
+    public class ProductViewModel
     {
-        private string _PriceLocal = "-";
+        [Display(Name = "產品唯一代號")]
+        public int Id { get; set; }
+
+        [Display(Name = "地區")]
+        public string Locale { get; set; }
+
+        [Display(Name = "產品名稱")]
+        public string Product_Name { get; set; }
+
+        [Display(Name = "價格")]
+        public decimal Price { get; set; }
+
+        private string _promotePrice = "-";
+        [Display(Name = "促銷價格")]
+        public string Promote_Price
+        {
+            get
+            {
+                decimal result;
+                if (decimal.TryParse(_promotePrice, out result))
+                {
+                    _promotePrice = Convert.ToString(string.Format(new CultureInfo(GetCurrencyByLocale(Locale)), "{0:c}", result));
+                }
+
+                return _promotePrice;
+            }
+            set
+            {
+                decimal result;
+                if (!decimal.TryParse(value, out result)|| result == 0)
+                {
+                    value = "-";
+                }
+
+                _promotePrice = value;
+            }
+        }
+
+        [Display(Name = "建立時間")]
+        public DateTime Create_Date { get; set; }
+
+        private string _priceLocal = "-";
         public string PriceLocal
         {
             get
             {
                 decimal result;
-                if (decimal.TryParse(_PriceLocal, out result))
+                if (decimal.TryParse(_priceLocal, out result))
                 {
-                    _PriceLocal = Convert.ToString(string.Format(new CultureInfo(GetCurrencyByLocale(_PriceLocal)), "{0:c}", result));
+                    _priceLocal = Convert.ToString(string.Format(new CultureInfo(GetCurrencyByLocale(Locale)), "{0:c}", result));
                 }
 
-                return    _PriceLocal;
+                return    _priceLocal;
             }
             set
             {
@@ -35,7 +77,7 @@ namespace ASP_NET_MVC_Q2.ViewModels
                     if (result == 0) { value = "-"; }
                 }
 
-                _PriceLocal = value;
+                _priceLocal = value;
             }
         }
 
